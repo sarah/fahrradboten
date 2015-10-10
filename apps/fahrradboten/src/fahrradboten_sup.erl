@@ -36,7 +36,11 @@ init([]) ->
               {map_srv, start_link, [graph_config()]},
               permanent, 5000, worker, dynamic},
 
-    Services = [MapSrv, BillingSrv, OrdersSrv, DispatchSrv],
+    MessengerSup = {dispatch_messenger_sup,
+              {dispatch_messenger_sup, start_link, []},
+              permanent, 5000, supervisor, dynamic},
+
+    Services = [MapSrv, BillingSrv, OrdersSrv, DispatchSrv, MessengerSup],
     {ok, {{one_for_one, 100, 1}, Services}}.
 
 %%====================================================================
